@@ -51,3 +51,57 @@ namespace Double_Linked_List_Algorithm
                 START = newnode;
                 return;
             }
+            Node previous, current;
+            for (current = previous = START; current != null &&
+                rollNo >= current.rollNumber; previous = current, current =
+                current.next)
+            {
+                if (rollNo == current.rollNumber)
+                {
+                    Console.WriteLine("\nDuplicate roll numbers not allowed");
+                    return;
+                }
+            }
+            newnode.next = current;
+            newnode.prev = previous;
+
+            if (current == null)
+            {
+                newnode.next = null;
+                previous.next = newnode;
+                return;
+            }
+            current.prev = newnode;
+            previous.next = newnode;
+        }
+        public bool Search(int rollNo, ref Node previous, ref Node current)
+        {
+            for (previous = current = START; current != null &&
+                rollNo != current.rollNumber; previous = current,
+                current = current.next) { }
+            return (current != null);
+        }
+
+        public bool delNode(int rollNo)
+        {
+            Node previous, current;
+            previous = current = null;
+            if (Search(rollNo, ref previous, ref current) == false)
+                return false;
+            if (current == START)
+            {
+                START = START.next;
+                if (START != null)
+                    START.prev = null;
+                return true;
+            }
+            if (current.next == null)
+            {
+                previous.next = null;
+                return true;
+            }
+
+            previous.next = current.next;
+            current.next.prev = previous;
+            return true;
+        }
